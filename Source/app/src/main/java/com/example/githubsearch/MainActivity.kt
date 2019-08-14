@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.SearchView
+import android.widget.ListAdapter
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,3 +31,7 @@ class MainActivity : AppCompatActivity() {
         const val filter2 = ""
     }
 }
+
+
+
+

@@ -2,6 +2,7 @@ package com.example.githubsearch
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,24 +12,30 @@ import io.reactivex.schedulers.Schedulers
 class MainActivity : AppCompatActivity() {
 
     var search_field: SearchView? = null
-    var tv_user: TextView? = null
-    val fetch_api by lazy { API.create() }
-    var disposable: Disposable? = null
+    var test1_text: TextView? = null
+    var test2_text: TextView? = null
+    private val fetch_api by lazy { API.create() }
+    private var disposable: Disposable? = null
 
-    val random_req = "https://api.github.com/search/repositories?q=tetris+in:readme,description,name"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tv_user = findViewById(R.id.tv_users)
+        search_field?.setOnClickListener(View.OnClickListener {
+            //TODO
+        })
+
         search_field = findViewById(R.id.search_bar_user)
+        test1_text = findViewById(R.id.test1)
+        test2_text = findViewById(R.id.test2)
 
         getRepo()
     }
 
     fun showResult(result:String) {
-        tv_user?.setText(result)
+        test1_text?.setText(result.get(2).toString())
+        test2_text?.setText(result.get(1).toString())
     }
 
     fun showError(e: String?) {

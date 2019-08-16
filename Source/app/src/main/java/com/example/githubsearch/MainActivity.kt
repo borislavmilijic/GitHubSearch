@@ -1,5 +1,6 @@
 package com.example.githubsearch
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -14,25 +15,16 @@ import io.reactivex.schedulers.Schedulers
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     var search_field: SearchView? = null
-    lateinit var repo_list: RecyclerView
 
-    private lateinit var repoAdapter: RepoAdapter
-
-
+    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        search_field?.setOnClickListener(View.OnClickListener {
-            //TODO
-        })
-
-        search_field = findViewById(R.id.search_bar_user)
-        repo_list = findViewById(R.id.repo_list)
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://api.github.com/search/")
@@ -46,16 +38,15 @@ class MainActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({ repoAdapter.setRepos(it.items) },
+            .subscribe ({
+                result -> println(result.items.toString()) },
                 {Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })
 
     }
 
+    inner class RepoAdapter(private val repos: MutableList<RepoItems>): RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
 
-    inner class RepoAdapter: RecyclerView.Adapter<RepoAdapter.RepoViewHolder>() {
-
-        private val repos: MutableList<RepoItems> = mutableListOf()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
             return RepoViewHolder(layoutInflater.inflate(R.layout.repo_row_layout, parent, false))
@@ -67,13 +58,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
+            notifyDataSetChanged()
             holder.bindModel(repos[position])
-        }
-
-        fun setRepos(data: List<RepoItems>) {
-            repos.addAll(data)
-            repoAdapter.notifyDataSetChanged()
-            Toast.makeText(applicationContext, repos.size.toString(), Toast.LENGTH_LONG).show()
         }
 
         inner class RepoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

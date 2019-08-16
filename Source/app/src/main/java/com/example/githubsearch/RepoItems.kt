@@ -4,16 +4,18 @@ import com.google.gson.annotations.SerializedName
 
 data class RepoItems (
         @SerializedName("id") val id : Int,
-        @SerializedName("node_id") val node_id : String,
+   //     @SerializedName("node_id") val node_id : String,
         @SerializedName("name") val name : String,
-        @SerializedName("full_name") val full_name : String,
-        @SerializedName("private") val private : Boolean,
+   //     @SerializedName("full_name") val full_name : String,
+   //     @SerializedName("private") val private : Boolean,
         @SerializedName("owner") val owner : Owner,
-        @SerializedName("html_url") val html_url : String,
+   //     @SerializedName("html_url") val html_url : String,
         @SerializedName("description") val description : String,
-        @SerializedName("fork") val fork : Boolean,
-        @SerializedName("url") val url : String,
-        @SerializedName("forks_url") val forks_url : String,
+   //     @SerializedName("fork") val fork : Boolean,
+        @SerializedName("url") val url : String
+
+
+  /**      @SerializedName("forks_url") val forks_url : String,
         @SerializedName("keys_urls_url") val keys_urls_url : String,
         @SerializedName("collaborators_url") val collaborators_url : String,
         @SerializedName("teams_url") val teams_url : String,
@@ -77,4 +79,5 @@ data class RepoItems (
         @SerializedName("watchers") val watchers : Int,
         @SerializedName("default_branch") val default_branch : String,
         @SerializedName("score") val score : Double
+*/
     )

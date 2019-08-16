@@ -1,17 +1,12 @@
 package com.example.githubsearch
 
-import android.content.ClipData
 import retrofit2.http.GET
 import io.reactivex.Observable
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Query
 
 interface API {
 
-    @GET("repositories?q=tetris+in:readme")
-    fun getReposObject(): Observable<JsonDataModel>
+    @GET("repositories?q=kurac+in:description")
+    fun getRepos(): Observable<Response>
 
     /**
 

@@ -1,5 +1,6 @@
 package com.example.githubsearch
 
+import android.content.ClipData
 import retrofit2.http.GET
 import io.reactivex.Observable
 import retrofit2.Retrofit
@@ -10,14 +11,15 @@ import retrofit2.http.Query
 interface API {
 
     @GET("repositories?q=tetris+in:readme")
-    fun getReposObject(@Query("q") q: String): Observable<DataModel.Result>
+    fun getReposObject(): Observable<JsonDataModel>
+
+    /**
 
     companion object {
         fun create(): API {
 
             val retrofit = Retrofit.Builder()
-                .addCallAdapterFactory(
-                    RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://api.github.com/search/")
                 .build()
@@ -25,5 +27,9 @@ interface API {
             return retrofit.create(API::class.java)
         }
     }
+
+    */
 }
+
+
 

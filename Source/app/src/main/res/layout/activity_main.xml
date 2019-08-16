@@ -6,12 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
-    <TextView
-            android:text="Test1"
-            android:layout_width="259dp"
-            android:layout_height="70dp"
-            android:id="@+id/test1" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="80dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/test2"/>
     <SearchView
             android:id="@+id/search_bar_user"
             android:layout_width="395dp"
@@ -19,11 +13,21 @@
             android:layout_marginTop="58dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
             android:iconifiedByDefault="true"/>
-    <TextView
-            android:text="Test2"
-            android:layout_width="259dp"
-            android:layout_height="70dp"
-            android:id="@+id/test2" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="85dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="328dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintHorizontal_bias="0.0"/>
+
+    <android.support.v7.widget.SwipeRefreshLayout
+            android:layout-width="match_parent"
+            android:layout-heigh="match_parent" android:layout_width="370dp"
+            android:layout_height="320dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="244dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="21dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.0" android:id="@+id/swipeRefreshLayout"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/repo_list"
+            android:layout_width="366dp"
+            android:layout_height="318dp" android:layout_marginBottom="249dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="22dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

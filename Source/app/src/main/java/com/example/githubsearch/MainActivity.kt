@@ -2,6 +2,7 @@ package com.example.githubsearch
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.AdapterView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +16,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var repoAdapter: DataAdapter
     lateinit var repoRecycle: RecyclerView
     lateinit var search: SearchView
-    lateinit var query: String
+    var query: String = ""
+
+    var isLastPage: Boolean = false
+    var isLoading: Boolean = false
+
+    lateinit var resultList: List<RepoItems>
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         repoRecycle.layoutManager = LinearLayoutManager(this)
         repoRecycle.adapter = repoAdapter
 
+        var myLayoutManager = LinearLayoutManager(this)
+
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(p0: String?): Boolean {
                 if (p0 != null) {
@@ -43,8 +51,10 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 //TODO
-                if (p0 != null) {
+                if (p0 != null && p0.isNotEmpty()) {
                     query = p0.toLowerCase()
+                    Toast.makeText(applicationContext, query, Toast.LENGTH_SHORT).show()
+
                 } else
                     Toast.makeText(applicationContext, "Your search query is empty! Try again.", Toast.LENGTH_SHORT).show()
 
@@ -52,16 +62,41 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val consumeAPI = API.create().getRepos()
+        val consumeAPI = API.create(query).getRepos()
 
         consumeAPI
             .subscribeOn(Schedulers.io())
             .unsubscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
-                result -> repoAdapter.setData(result.items)
+                result -> resultList = result.items
+              //  result -> repoAdapter.setData(result.items)
             }, {Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })
+
+
+
+        repoRecycle.addOnScrollListener(object : PaginationScrollListener(myLayoutManager) {
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
+
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
+            override fun loadMoreItems() {
+                isLoading = true
+                getMoreItems()
+            }
+
+        })
+    }
+
+    fun getMoreItems() {
+        isLoading = false
+        repoAdapter.setData(resultList)
+
     }
 }
 

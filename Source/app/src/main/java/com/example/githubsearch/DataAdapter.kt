@@ -14,8 +14,11 @@ class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewH
     private var result: List<RepoItems> = listOf()
 
     fun setData (data: List<RepoItems>) {
+        var size = data.size
         this.result = data
+        var sizeNew = data.size
         notifyDataSetChanged()
+        notifyItemRangeChanged(size, sizeNew)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

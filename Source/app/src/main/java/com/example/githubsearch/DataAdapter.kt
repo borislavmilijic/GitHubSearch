@@ -8,11 +8,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import org.w3c.dom.Text
 
 
-class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewHolder>() {
+class DataAdapter : RecyclerView.Adapter<DataAdapter.Companion.ViewHolder> {
 
     private var result: List<RepoItems> = listOf()
+    lateinit var context: Context
+    lateinit var list: List<RepoItems>
+
+    constructor(list: List<RepoItems>) :super() {
+        this.list = list
+    }
+
 
     fun setData (data: List<RepoItems>) {
         var size = data.size
@@ -28,7 +37,8 @@ class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewH
         holder.repo_owner.text = result[position].owner.login
 
         //GLIDE Lib
-        holder.avatar.setImageURI(Uri.parse(result[position].owner.avatar_url))
+        //holder.avatar.setImageURI(Uri.parse(result[position].owner.avatar_url))
+        Glide.with(context).load(result[position].owner.avatar_url).asBitmap().into(holder.avatar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,10 +50,20 @@ class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewH
         return result.size
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val repo_name: TextView = itemView.findViewById(R.id.repo_name)
-        val repo_owner: TextView = itemView.findViewById(R.id.repo_owner)
-        val repo_description: TextView = itemView.findViewById(R.id.repo_description)
-        val avatar: ImageView = itemView.findViewById(R.id.avatar)
+    companion object {
+        class ViewHolder : RecyclerView.ViewHolder {
+
+            lateinit var repo_name: TextView
+            lateinit var repo_owner: TextView
+            lateinit var repo_description: TextView
+            lateinit var avatar: ImageView
+
+            constructor(itemView: View) : super(itemView) {
+                repo_name = itemView!!.findViewById(R.id.repo_name)
+                repo_owner = itemView!!.findViewById(R.id.repo_owner)
+                repo_description = itemView!!.findViewById(R.id.repo_description)
+                avatar = itemView!!.findViewById(R.id.avatar)
+            }
+        }
     }
 }

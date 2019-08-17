@@ -2,7 +2,9 @@ package com.example.githubsearch
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import android.widget.AdapterView
+import android.widget.ProgressBar
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,15 +15,21 @@ import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
 
+    var query: String = ""
+    var resultList: List<RepoItems> = listOf()
+
+    //lateinit var progressBar: ProgressBar
+
+    var visibleItemCount: Int = 0
+    var pastVisibleItemCount: Int = 0
+    var loading: Boolean = false
+    var page_id: Int = 1
+
+
     lateinit var repoAdapter: DataAdapter
     lateinit var repoRecycle: RecyclerView
     lateinit var search: SearchView
-    var query: String = ""
-
-    var isLastPage: Boolean = false
-    var isLoading: Boolean = false
-
-    lateinit var resultList: List<RepoItems>
+    lateinit var layoutManager: LinearLayoutManager
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,8 +44,13 @@ class MainActivity : AppCompatActivity() {
         repoAdapter = DataAdapter(this)
         repoRecycle.layoutManager = LinearLayoutManager(this)
         repoRecycle.adapter = repoAdapter
+        layoutManager = LinearLayoutManager(this)
 
-        var myLayoutManager = LinearLayoutManager(this)
+
+
+        repoRecycle.setHasFixedSize(true)
+        getMoreData(page_id.toString())
+
 
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(p0: String?): Boolean {
@@ -69,33 +82,15 @@ class MainActivity : AppCompatActivity() {
             .unsubscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
-                result -> resultList = result.items
-              //  result -> repoAdapter.setData(result.items)
+               // result -> resultList = result.items
+               result -> repoAdapter.setData(result.items)
             }, {Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })
 
-
-
-        repoRecycle.addOnScrollListener(object : PaginationScrollListener(myLayoutManager) {
-            override fun isLastPage(): Boolean {
-                return isLastPage
-            }
-
-            override fun isLoading(): Boolean {
-                return isLoading
-            }
-
-            override fun loadMoreItems() {
-                isLoading = true
-                getMoreItems()
-            }
-
-        })
     }
 
-    fun getMoreItems() {
-        isLoading = false
-        repoAdapter.setData(resultList)
+    private fun getMoreData(page_id: String) {
+       // progressBar.visibility = View.VISIBLE
 
     }
 }

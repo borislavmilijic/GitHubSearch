@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+
 class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewHolder>() {
 
     private var result: List<RepoItems> = listOf()
@@ -25,6 +26,8 @@ class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewH
         holder.repo_name.text = result[position].name
         holder.repo_description.text = result[position].description
         holder.repo_owner.text = result[position].owner.login
+
+        //GLIDE Lib
         holder.avatar.setImageURI(Uri.parse(result[position].owner.avatar_url))
     }
 

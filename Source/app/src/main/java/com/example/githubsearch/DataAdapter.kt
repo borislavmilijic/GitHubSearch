@@ -1,34 +1,37 @@
 package com.example.githubsearch
 
-import android.content.Context
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 
+class DataAdapter(
+    list: MutableList<RepoItems> ) : RecyclerView.Adapter<DataAdapter.Companion.ViewHolder>() {
 
-class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewHolder>() {
+    private var result: MutableList<RepoItems> = mutableListOf()
 
-    private var result: List<RepoItems> = listOf()
+    init {
+        setData(list)
+    }
 
     fun setData (data: List<RepoItems>) {
-        var size = data.size
-        this.result = data
-        var sizeNew = data.size
+        result.addAll(data)
+        val init = data.size
+        notifyItemRangeChanged(init, result.size)
         notifyDataSetChanged()
-        notifyItemRangeChanged(size, sizeNew)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.repo_name.text = result[position].name
         holder.repo_description.text = result[position].description
         holder.repo_owner.text = result[position].owner.login
-
-        //GLIDE Lib
-        holder.avatar.setImageURI(Uri.parse(result[position].owner.avatar_url))
+        Picasso
+            .get()
+            .load(result[position].owner.avatar_url)
+            .into(holder.avatar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,10 +43,19 @@ class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewH
         return result.size
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val repo_name: TextView = itemView.findViewById(R.id.repo_name)
-        val repo_owner: TextView = itemView.findViewById(R.id.repo_owner)
-        val repo_description: TextView = itemView.findViewById(R.id.repo_description)
-        val avatar: ImageView = itemView.findViewById(R.id.avatar)
+    companion object {
+        class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            var repo_name: TextView
+            var repo_owner: TextView
+            var repo_description: TextView
+            var avatar: ImageView
+
+            init {
+                repo_name = itemView.findViewById(R.id.repo_name)
+                repo_owner = itemView.findViewById(R.id.repo_owner)
+                repo_description = itemView.findViewById(R.id.repo_description)
+                avatar = itemView.findViewById(R.id.avatar)
+            }
+        }
     }
 }

@@ -1,32 +1,28 @@
 package com.example.githubsearch
 
-import retrofit2.http.GET
 import io.reactivex.Observable
 import retrofit2.Retrofit
-import retrofit2.Call
-import retrofit2.http.Path
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
 import retrofit2.http.Query
 
 object Constants {
     const val BASE_URL = "https://api.github.com/search/"
-    const val REPO_URL = "repositories?q=tetris"
-
 }
 
 interface API {
 
-    @GET(Constants.REPO_URL)
+    @GET("repositories")
 
-    fun getRepos(): Observable<Response>
+    fun getRepos(
+        @Query("q") userQuery: String,
+        @Query("page") page_num: Int,
+        @Query("per_page") per_page: Int
+    ): Observable<Response>
 
     companion object {
-        fun create(userQuery: String): API {
-
-            val BASE_URL = "https://api.github.com/search/"
-            val REPO_URL = "repositories?q="
-            val finalURL: String = BASE_URL+REPO_URL+userQuery
+        fun create(): API {
 
             val retrofit = Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

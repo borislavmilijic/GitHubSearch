@@ -1,5 +1,6 @@
 package com.example.githubsearch
 
+import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
 data class Owner (

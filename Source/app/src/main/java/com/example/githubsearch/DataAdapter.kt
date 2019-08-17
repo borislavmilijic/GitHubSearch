@@ -1,9 +1,11 @@
 package com.example.githubsearch
 
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -20,6 +22,7 @@ class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewH
         holder.repo_name.text = result[position].name
         holder.repo_description.text = result[position].description
         holder.repo_owner.text = result[position].owner.login
+        holder.avatar.setImageURI(Uri.parse(result[position].owner.avatar_url))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,5 +38,6 @@ class DataAdapter (val context: Context): RecyclerView.Adapter<DataAdapter.ViewH
         val repo_name: TextView = itemView.findViewById(R.id.repo_name)
         val repo_owner: TextView = itemView.findViewById(R.id.repo_owner)
         val repo_description: TextView = itemView.findViewById(R.id.repo_description)
+        val avatar: ImageView = itemView.findViewById(R.id.avatar)
     }
 }

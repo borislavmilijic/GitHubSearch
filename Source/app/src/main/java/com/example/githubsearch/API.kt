@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 interface API {
 
-    @GET("repositories?q=kurac+in:description")
+    @GET("repositories?q=tetris+in:description")
 
     fun getRepos(): Observable<Response>
 

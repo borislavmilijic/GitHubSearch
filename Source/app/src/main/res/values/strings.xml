@@ -3,4 +3,8 @@
     <string name="owner">owner</string>
     <string name="title">title</string>
     <string name="description">description</string>
+    <string name="owner_avatar">owner-avatar</string>
+    <string name="description_fix">Description:</string>
+    <string name="repo_name">Repo Name:</string>
+    <string name="repo_owner">Repo Owner:</string>
 </resources>

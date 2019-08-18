@@ -19,9 +19,12 @@ import io.reactivex.schedulers.Schedulers
 class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
     var query: String = ""
     var response: MutableList<RepoItems> = mutableListOf()
-    var per_page: Int = 10
+    var per_page: Int = 20
     var page_num: Int = 1
     var sort = "stars"
+    var readme = "readme"
+    var description = "description"
+    var name = "name"
 
     lateinit var repoAdapter: DataAdapter
     lateinit var repoRecycle: SimpleRecyclerView

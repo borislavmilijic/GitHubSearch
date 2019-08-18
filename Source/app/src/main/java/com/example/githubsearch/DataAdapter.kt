@@ -25,6 +25,8 @@ class DataAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        // val repo_url = result[position].url
+
         holder.repo_name.text = result[position].name
         holder.repo_description.text = result[position].description
         holder.repo_owner.text = result[position].owner.login
@@ -32,6 +34,7 @@ class DataAdapter(
             .get()
             .load(result[position].owner.avatar_url)
             .into(holder.avatar)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

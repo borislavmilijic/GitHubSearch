@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:id="@+id/linearLayout"
-        android:clickable="false">
+        android:clickable="false" android:background="#24292e">
 
     <ImageView
             android:layout_width="50dp"
@@ -31,7 +31,7 @@
             android:layout_marginTop="32dp"
             app:layout_constraintTop_toTopOf="parent"
             android:gravity="center_vertical"
-    />
+            android:textColor="@android:color/white"/>
     <TextView
             android:text="@string/title"
             android:layout_width="341dp"
@@ -41,7 +41,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/avatar"/>
+            app:layout_constraintTop_toBottomOf="@+id/avatar" android:textColor="@color/primary_white"/>
     <TextView
             android:text="@string/description"
             android:layout_width="341dp"
@@ -51,7 +51,7 @@
             android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@+id/repo_name"
             android:layout_marginStart="16dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" android:textColor="@android:color/white"/>
     <TextView
             android:layout_width="88dp"
             android:layout_height="19dp"
@@ -63,7 +63,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="136dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/primary_white"/>
     <TextView
             android:layout_width="84dp"
             android:layout_height="17dp"
@@ -75,7 +76,8 @@
             android:layout_marginStart="16dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/primary_white"/>
     <TextView
             android:layout_width="86dp"
             android:layout_height="18dp"
@@ -87,7 +89,8 @@
             android:layout_marginTop="12dp"
             app:layout_constraintTop_toTopOf="parent"
             android:textStyle="bold"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/primary_white"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

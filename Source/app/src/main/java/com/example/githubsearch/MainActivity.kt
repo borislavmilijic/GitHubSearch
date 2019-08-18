@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import androidx.recyclerview.widget.DividerItemDecoration
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,6 +43,12 @@ class MainActivity : AppCompatActivity() {
         repoRecycle.layoutManager = LinearLayoutManager(this)
         repoRecycle.adapter = repoAdapter
         layoutManager = LinearLayoutManager(this)
+
+        val mDividerItemDecoration = DividerItemDecoration(
+            repoRecycle.getContext(),
+            layoutManager.getOrientation()
+        )
+        repoRecycle.addItemDecoration(mDividerItemDecoration)
 
         repoRecycle.setHasFixedSize(true)
 

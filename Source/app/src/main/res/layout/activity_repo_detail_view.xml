@@ -11,9 +11,11 @@
             android:text=""
             android:layout_width="60dp"
             android:layout_height="30dp"
+            android:autoSizeTextType="uniform"
             android:id="@+id/repo_forks_count" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/repo_repo_name"
-            app:layout_constraintStart_toEndOf="@+id/repo_forks" android:textColor="@color/primary_white"/>
+            app:layout_constraintStart_toEndOf="@+id/repo_forks" android:textColor="@color/primary_white"
+            tools:ignore="UnusedAttribute"/>
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" tools:srcCompat="@tools:sample/avatars[7]"
@@ -113,5 +115,6 @@
             android:layout_height="30dp"
             android:id="@+id/repo_stars_count" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/repo_repo_name"
-            app:layout_constraintStart_toEndOf="@+id/repo_stars" android:textColor="@color/primary_white"/>
+            app:layout_constraintStart_toEndOf="@+id/repo_stars" android:textColor="@color/primary_white"
+            tools:ignore="UnusedAttribute"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

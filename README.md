@@ -1,5 +1,6 @@
 # GitHubSearch
 Simple application which can be used to search for repositories on Github.
+***
 
 ### Requirements:
 
@@ -18,9 +19,11 @@ Simple application which can be used to search for repositories on Github.
 - [x] Detail Screen of a Repo
 - [ ] Type-ahead Search
 - [x] Comprehensible VCS History
+***
 
 Compiled SDK-Version: [28]
 Minimum SDK-Version: [24]
+***
 
 External Libraries and Frameworks:
 

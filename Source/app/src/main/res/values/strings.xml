@@ -7,4 +7,5 @@
     <string name="description_fix">Description:</string>
     <string name="repo_name">Repo Name:</string>
     <string name="repo_owner">Repo Owner:</string>
+    <string name="language">Language:</string>
 </resources>

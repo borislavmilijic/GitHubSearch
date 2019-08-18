@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
     lateinit var search: SearchView
     lateinit var layoutManager: LinearLayoutManager
 
-  //  private var
+    var result_list: ArrayList<RepoItems> = arrayListOf()
 
     //TODO --> Clickable Items
     //TODO --> Type-ahead Search
@@ -103,13 +103,26 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
             result-> repoAdapter = DataAdapter(result.items, this)
-                repoRecycle.adapter = repoAdapter }, {
+                repoRecycle.adapter = repoAdapter
+                result_list.addAll(result.items)
+               // result.items
+                }, {
                 Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })
     }
 
     override fun onRepoClick(position: Int) {
+        result_list[position]
         val intent = Intent(this, RepoDetailView::class.java)
+
+        intent.putExtra("repo_full_name",result_list[position].full_name)
+        intent.putExtra("repo_owner_name",result_list[position].owner.login)
+        intent.putExtra("repo_avatar_url", result_list[position].owner.avatar_url)
+        intent.putExtra("stars_count", result_list[position].stargazers_count)
+        intent.putExtra("forks_count", result_list[position].forks)
+        intent.putExtra("repo_description", result_list[position].description)
+        intent.putExtra("repo_language", result_list[position].language)
+
         startActivity(intent)
     }
 }

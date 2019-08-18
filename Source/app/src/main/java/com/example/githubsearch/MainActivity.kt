@@ -1,6 +1,7 @@
 package com.example.githubsearch
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.SearchView
 import android.widget.Toast
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
 
     var query: String = ""
     var response: MutableList<RepoItems> = mutableListOf()
@@ -29,7 +30,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var search: SearchView
     lateinit var layoutManager: LinearLayoutManager
 
-    @SuppressLint("CheckResult")
+  //  private var
+
+    //TODO --> Clickable Items
+    //TODO --> Type-ahead Search
+    //TODO --> Pagination
+
+   // @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         search.isIconfiedByDefault
         search.isSubmitButtonEnabled
         repoRecycle = findViewById(R.id.repo_list)
-        repoAdapter = DataAdapter(response)
+        repoAdapter = DataAdapter(response, this)
         repoRecycle.layoutManager = LinearLayoutManager(this)
         repoRecycle.adapter = repoAdapter
         layoutManager = LinearLayoutManager(this)
@@ -95,10 +102,15 @@ class MainActivity : AppCompatActivity() {
             .unsubscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
-            result-> repoAdapter = DataAdapter(result.items)
+            result-> repoAdapter = DataAdapter(result.items, this)
                 repoRecycle.adapter = repoAdapter }, {
                 Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })
+    }
+
+    override fun onRepoClick(position: Int) {
+        val intent = Intent(this, RepoDetailView::class.java)
+        startActivity(intent)
     }
 }
 

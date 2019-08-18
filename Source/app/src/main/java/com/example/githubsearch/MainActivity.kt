@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
         repoRecycle.setAdapter(repoAdapter)
         layoutManager = LinearLayoutManager(this)
 
+       //divider for RecycleView results
         val mDividerItemDecoration = DividerItemDecoration(
             repoRecycle.getContext(),
             layoutManager.getOrientation()
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
             }
         })
 
+       //loads the new data when on the end of list in RV
        repoRecycle.setOnLoadMoreListener {
            page_num++
            getData(query)
@@ -88,10 +90,11 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
             })
     }
 
+    //on Recycler view item click -> new Activity: (somewhat) Detailed Repository View
     override fun onRepoClick(position: Int) {
-        result_list[position]
         val intent = Intent(this, RepoDetailView::class.java)
 
+        //puting all the data for the new activity in intent
         intent.putExtra("repo_full_name",result_list[position].full_name)
         intent.putExtra("repo_owner_name",result_list[position].owner.login)
         intent.putExtra("repo_avatar_url", result_list[position].owner.avatar_url)

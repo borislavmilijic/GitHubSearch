@@ -25,10 +25,11 @@ interface API {
         @Query("per_page") per_page: Int
 
     ): Observable<Response>
+    //Using RXJava Observable because i didn't know how to handle Calls/Callbacks properly
 
     companion object {
         fun create(): API {
-
+            //API Call builder and JSON parser
             val retrofit = Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())

@@ -9,16 +9,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.myhexaville.simplerecyclerview.SimpleRecyclerView
 import com.squareup.picasso.Picasso
 
-class DataAdapter (list: MutableList<RepoItems>,
-                            onRepoListener: OnRepoListener) : SimpleRecyclerView.Adapter<DataAdapter.Companion.ViewHolder>() {
+class DataAdapter (list: MutableList<RepoItems>, onRepoListener: OnRepoListener)
+    : SimpleRecyclerView.Adapter<DataAdapter.Companion.ViewHolder>() {
+
+    private var result: MutableList<RepoItems> = mutableListOf()
+    private var mOnRepoListener: OnRepoListener
+
+    init {
+        //initialise Data
+        setData(list)
+        mOnRepoListener = onRepoListener
+    }
+
+    //passing the Data fetched from API to RecyclerView Adapter
+    fun setData (data: List<RepoItems>) {
+        result.addAll(data)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateHolder(parent: ViewGroup?): ViewHolder {
+        //inflates a custom Row Layout to be shown in RecyclerView
         val v = LayoutInflater.from(parent?.context).inflate(R.layout.repo_row_layout, parent, false)
         return ViewHolder(v, mOnRepoListener)    }
 
     override fun onBindHolder(holder: ViewHolder?, position: Int) {
+        //binds the data from API to respected views
         holder?.repo_name?.text   = result[position].name
         holder?.repo_description?.text   = result[position].description
         holder?.repo_owner?.text   = result[position].owner.login
+        //loads img url from JSON
         Picasso
             .get()
             .load(result[position].owner.avatar_url)
@@ -28,22 +47,9 @@ class DataAdapter (list: MutableList<RepoItems>,
         return result.size
     }
 
-    private var result: MutableList<RepoItems> = mutableListOf()
-    private var mOnRepoListener: OnRepoListener
-
-    init {
-        setData(list)
-        mOnRepoListener = onRepoListener
-    }
-
-    fun setData (data: List<RepoItems>) {
-        result.addAll(data)
-        val init = data.size
-        //notifyItemRangeChanged(init, result.size)
-        notifyDataSetChanged()
-    }
-
+    //using companion object since it is safer than inner class
     companion object {
+        //ViewHolder to initialize the Views in CustomRow
         class ViewHolder(itemView: View, onRepoListener: OnRepoListener
         ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
             override fun onClick(p0: View?) {
@@ -67,7 +73,7 @@ class DataAdapter (list: MutableList<RepoItems>,
             }
         }
     }
-
+    //interface for ClickableItems from RecycleView
     interface OnRepoListener {
         fun onRepoClick(position: Int)
     }

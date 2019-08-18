@@ -122,6 +122,7 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
         intent.putExtra("forks_count", result_list[position].forks)
         intent.putExtra("repo_description", result_list[position].description)
         intent.putExtra("repo_language", result_list[position].language)
+        intent.putExtra("repo_url", result_list[position].html_url)
 
         startActivity(intent)
     }

@@ -5,6 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Query
 
 object Constants {
@@ -13,12 +14,16 @@ object Constants {
 
 interface API {
 
+    @Headers ("User-agent: request")
+
     @GET("repositories")
 
     fun getRepos(
         @Query("q") userQuery: String,
+        @Query("sort") sort: String,
         @Query("page") page_num: Int,
         @Query("per_page") per_page: Int
+
     ): Observable<Response>
 
     companion object {

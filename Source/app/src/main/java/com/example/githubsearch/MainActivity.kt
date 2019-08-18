@@ -6,35 +6,27 @@ import android.os.Bundle
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.myhexaville.simplerecyclerview.SimpleRecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import androidx.recyclerview.widget.DividerItemDecoration
-
-
 
 class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
-
     var query: String = ""
     var response: MutableList<RepoItems> = mutableListOf()
-    var visibleItemCount: Int = 0
-    var lastVisibleItemCount: Int = 0
-    var totalItemCount: Int = 0
-    var loading: Boolean = false
-    var per_page: Int = 30
+    var per_page: Int = 10
     var page_num: Int = 1
+    var sort = "stars"
 
     lateinit var repoAdapter: DataAdapter
-    lateinit var repoRecycle: RecyclerView
+    lateinit var repoRecycle: SimpleRecyclerView
     lateinit var search: SearchView
     lateinit var layoutManager: LinearLayoutManager
 
     var result_list: ArrayList<RepoItems> = arrayListOf()
 
-    //TODO --> Clickable Items
     //TODO --> Type-ahead Search
-    //TODO --> Pagination
 
    // @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +39,8 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
         search.isSubmitButtonEnabled
         repoRecycle = findViewById(R.id.repo_list)
         repoAdapter = DataAdapter(response, this)
-        repoRecycle.layoutManager = LinearLayoutManager(this)
-        repoRecycle.adapter = repoAdapter
+        repoRecycle.setLayoutManager(LinearLayoutManager(this))
+        repoRecycle.setAdapter(repoAdapter)
         layoutManager = LinearLayoutManager(this)
 
         val mDividerItemDecoration = DividerItemDecoration(
@@ -56,8 +48,6 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
             layoutManager.getOrientation()
         )
         repoRecycle.addItemDecoration(mDividerItemDecoration)
-
-        repoRecycle.setHasFixedSize(true)
 
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(p0: String?): Boolean {
@@ -74,28 +64,15 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
             }
         })
 
-        repoRecycle.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                visibleItemCount = layoutManager.childCount
-                totalItemCount = layoutManager.itemCount
-                lastVisibleItemCount = layoutManager.findLastVisibleItemPosition()
-
-                if (lastVisibleItemCount >= totalItemCount) {
-                    if (!loading && dy>0) {
-                        loading = false
-                        page_num++
-                        getData(query)
-                    }
-                }
-            }
-        })
+       repoRecycle.setOnLoadMoreListener {
+           page_num++
+           getData(query)
+       }
     }
 
     @SuppressLint("CheckResult")
     private fun getData(user_query: String) {
-        val consumeAPI = API.create().getRepos(user_query, page_num, per_page)
+        val consumeAPI = API.create().getRepos(user_query, sort, page_num, per_page)
 
         consumeAPI
             .subscribeOn(Schedulers.io())
@@ -103,9 +80,9 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
             result-> repoAdapter = DataAdapter(result.items, this)
-                repoRecycle.adapter = repoAdapter
+                repoRecycle.setAdapter(repoAdapter)
                 result_list.addAll(result.items)
-               // result.items
+                repoRecycle.setDoneFetching()
                 }, {
                 Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })

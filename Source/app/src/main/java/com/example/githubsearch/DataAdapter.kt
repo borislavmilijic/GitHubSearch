@@ -6,10 +6,27 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.myhexaville.simplerecyclerview.SimpleRecyclerView
 import com.squareup.picasso.Picasso
 
 class DataAdapter (list: MutableList<RepoItems>,
-                   onRepoListener: OnRepoListener) : RecyclerView.Adapter<DataAdapter.Companion.ViewHolder>() {
+                            onRepoListener: OnRepoListener) : SimpleRecyclerView.Adapter<DataAdapter.Companion.ViewHolder>() {
+    override fun onCreateHolder(parent: ViewGroup?): ViewHolder {
+        val v = LayoutInflater.from(parent?.context).inflate(R.layout.repo_row_layout, parent, false)
+        return ViewHolder(v, mOnRepoListener)    }
+
+    override fun onBindHolder(holder: ViewHolder?, position: Int) {
+        holder?.repo_name?.text   = result[position].name
+        holder?.repo_description?.text   = result[position].description
+        holder?.repo_owner?.text   = result[position].owner.login
+        Picasso
+            .get()
+            .load(result[position].owner.avatar_url)
+            .into(holder?.avatar)}
+
+    override fun getCount(): Int {
+        return result.size
+    }
 
     private var result: MutableList<RepoItems> = mutableListOf()
     private var mOnRepoListener: OnRepoListener
@@ -22,27 +39,8 @@ class DataAdapter (list: MutableList<RepoItems>,
     fun setData (data: List<RepoItems>) {
         result.addAll(data)
         val init = data.size
-        notifyItemRangeChanged(init, result.size)
+        //notifyItemRangeChanged(init, result.size)
         notifyDataSetChanged()
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.repo_name.text = result[position].name
-        holder.repo_description.text = result[position].description
-        holder.repo_owner.text = result[position].owner.login
-        Picasso
-            .get()
-            .load(result[position].owner.avatar_url)
-            .into(holder.avatar)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.repo_row_layout, parent, false)
-        return ViewHolder(v, mOnRepoListener)
-    }
-
-    override fun getItemCount(): Int {
-        return result.size
     }
 
     companion object {
@@ -50,7 +48,6 @@ class DataAdapter (list: MutableList<RepoItems>,
         ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
             override fun onClick(p0: View?) {
                 mOnRepoListener.onRepoClick(adapterPosition)
-                println(adapterPosition.toString())
             }
 
             var repo_name: TextView

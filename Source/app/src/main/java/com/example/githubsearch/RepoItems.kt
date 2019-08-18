@@ -1,3 +1,7 @@
+/**
+ * @author: Borislav Milijic
+ */
+
 package com.example.githubsearch
 
 import com.google.gson.annotations.SerializedName

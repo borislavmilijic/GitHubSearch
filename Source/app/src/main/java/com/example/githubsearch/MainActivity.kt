@@ -22,9 +22,15 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
     var per_page: Int = 20
     var page_num: Int = 1
     var sort = "stars"
+
+   /**
+    *     TODO --> Type-ahead Search
+    *     TODO --> Add some filters for the Search
+    *
     var readme = "readme"
     var description = "description"
     var name = "name"
+    */
 
     lateinit var repoAdapter: DataAdapter
     lateinit var repoRecycle: SimpleRecyclerView
@@ -33,7 +39,7 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
 
     var result_list: ArrayList<RepoItems> = arrayListOf()
 
-    //TODO --> Type-ahead Search
+
 
    // @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,20 +109,21 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
     override fun onRepoClick(position: Int) {
         val intent = Intent(this, RepoDetailView::class.java)
 
+        var pos = position
+
+        if(page_num>1)
+            pos = position+((page_num-1)*per_page)
+
         //puting all the data for the new activity in intent
-        intent.putExtra("repo_full_name",result_list[position].full_name)
-        intent.putExtra("repo_owner_name",result_list[position].owner.login)
-        intent.putExtra("repo_avatar_url", result_list[position].owner.avatar_url)
-        intent.putExtra("stars_count", result_list[position].stargazers_count)
-        intent.putExtra("forks_count", result_list[position].forks)
-        intent.putExtra("repo_description", result_list[position].description)
-        intent.putExtra("repo_language", result_list[position].language)
-        intent.putExtra("repo_url", result_list[position].html_url)
+        intent.putExtra("repo_full_name",result_list[pos].full_name)
+        intent.putExtra("repo_owner_name",result_list[pos].owner.login)
+        intent.putExtra("repo_avatar_url", result_list[pos].owner.avatar_url)
+        intent.putExtra("stars_count", result_list[pos].stargazers_count)
+        intent.putExtra("forks_count", result_list[pos].forks)
+        intent.putExtra("repo_description", result_list[pos].description)
+        intent.putExtra("repo_language", result_list[pos].language)
+        intent.putExtra("repo_url", result_list[pos].html_url)
 
         startActivity(intent)
     }
 }
-
-
-
-

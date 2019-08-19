@@ -8,23 +8,20 @@
 
     <application
             android:allowBackup="true"
-            android:icon="@drawable/ic_github"
-            android:label="4DJob"
-            android:roundIcon="@drawable/ic_github"
+            android:icon="@mipmap/ic_launcher"
+            android:label="if only I could go back..."
+            android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".SplashActivity">
+        <activity android:name=".RepoDetailView">
+        </activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".RepoDetailView">
-        </activity>
-        <activity android:name=".MainActivity">
-
         </activity>
     </application>
 

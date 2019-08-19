@@ -1,16 +1,13 @@
-/**
- * @author: Borislav Milijic
- */
-
 package com.example.githubsearch
 
 import android.content.Intent
 import android.net.Uri
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
 
 class RepoDetailView : AppCompatActivity() {
@@ -53,15 +50,12 @@ class RepoDetailView : AppCompatActivity() {
             .load(intent.getStringExtra("repo_avatar_url"))
             .into(repo_avatar_owner)
 
-
-        //Opening Repository URL in external browser
         open_browser.setOnClickListener {
             val openURL = Intent(Intent.ACTION_VIEW)
             openURL.data = Uri.parse(repo_html_url)
             startActivity(openURL)
         }
     }
-    //back button
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true

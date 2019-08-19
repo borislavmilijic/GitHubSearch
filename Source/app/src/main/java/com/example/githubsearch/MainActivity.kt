@@ -1,7 +1,3 @@
-/**
- * @author: Borislav Milijic
- */
-
 package com.example.githubsearch
 
 import android.annotation.SuppressLint
@@ -10,30 +6,35 @@ import android.os.Bundle
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.myhexaville.simplerecyclerview.SimpleRecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import androidx.recyclerview.widget.DividerItemDecoration
+
+
 
 class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
+
     var query: String = ""
     var response: MutableList<RepoItems> = mutableListOf()
-    var per_page: Int = 20
+    var visibleItemCount: Int = 0
+    var lastVisibleItemCount: Int = 0
+    var totalItemCount: Int = 0
+    var loading: Boolean = false
+    var per_page: Int = 50
     var page_num: Int = 1
     var sort = "stars"
-    var readme = "readme"
-    var description = "description"
-    var name = "name"
 
     lateinit var repoAdapter: DataAdapter
-    lateinit var repoRecycle: SimpleRecyclerView
+    lateinit var repoRecycle: RecyclerView
     lateinit var search: SearchView
     lateinit var layoutManager: LinearLayoutManager
 
     var result_list: ArrayList<RepoItems> = arrayListOf()
 
     //TODO --> Type-ahead Search
+    //TODO --> Pagination
 
    // @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,16 +47,17 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
         search.isSubmitButtonEnabled
         repoRecycle = findViewById(R.id.repo_list)
         repoAdapter = DataAdapter(response, this)
-        repoRecycle.setLayoutManager(LinearLayoutManager(this))
-        repoRecycle.setAdapter(repoAdapter)
+        repoRecycle.layoutManager = LinearLayoutManager(this)
+        repoRecycle.adapter = repoAdapter
         layoutManager = LinearLayoutManager(this)
 
-       //divider for RecycleView results
         val mDividerItemDecoration = DividerItemDecoration(
             repoRecycle.getContext(),
             layoutManager.getOrientation()
         )
         repoRecycle.addItemDecoration(mDividerItemDecoration)
+
+        repoRecycle.setHasFixedSize(true)
 
         search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(p0: String?): Boolean {
@@ -72,13 +74,23 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
             }
         })
 
-       //loads the new data when on the end of list in RV
-       repoRecycle.setOnLoadMoreListener {
-           while (page_num<=(result_list.size/per_page)) {
-           page_num++
-           getData(query)
-           }
-       }
+        repoRecycle.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                visibleItemCount = layoutManager.childCount
+                totalItemCount = layoutManager.itemCount
+                lastVisibleItemCount = layoutManager.findLastVisibleItemPosition()
+
+                if (lastVisibleItemCount >= totalItemCount) {
+                    if (!loading && dy>0) {
+                        loading = false
+                        page_num++
+                        getData(query)
+                    }
+                }
+            }
+        })
     }
 
     @SuppressLint("CheckResult")
@@ -91,19 +103,17 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe ({
             result-> repoAdapter = DataAdapter(result.items, this)
-                repoRecycle.setAdapter(repoAdapter)
+                repoRecycle.adapter = repoAdapter
                 result_list.addAll(result.items)
-                repoRecycle.setDoneFetching()
                 }, {
                 Toast.makeText(applicationContext, it.message, Toast.LENGTH_LONG).show()
             })
     }
 
-    //on Recycler view item click -> new Activity: (somewhat) Detailed Repository View
     override fun onRepoClick(position: Int) {
+        result_list[position]
         val intent = Intent(this, RepoDetailView::class.java)
 
-        //puting all the data for the new activity in intent
         intent.putExtra("repo_full_name",result_list[position].full_name)
         intent.putExtra("repo_owner_name",result_list[position].owner.login)
         intent.putExtra("repo_avatar_url", result_list[position].owner.avatar_url)

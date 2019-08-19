@@ -8,7 +8,7 @@ Simple application which can be used to search for repositories on Github.
 - [x] Input Text Search Field
 - [x] List for Results
 - [x] Use Github REST API
-- [x] Implement pagination
+- [ ] Implement pagination
 - [x] Result entries clickable -> Open in system browser 
 
 ### Nice to haves:

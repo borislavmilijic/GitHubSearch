@@ -74,8 +74,10 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
 
        //loads the new data when on the end of list in RV
        repoRecycle.setOnLoadMoreListener {
+           while (page_num<=(result_list.size/per_page)) {
            page_num++
            getData(query)
+           }
        }
     }
 

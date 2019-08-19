@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), DataAdapter.OnRepoListener {
     var lastVisibleItemCount: Int = 0
     var totalItemCount: Int = 0
     var loading: Boolean = false
-    var per_page: Int = 50
+    var per_page: Int = 100
     var page_num: Int = 1
     var sort = "stars"
 
